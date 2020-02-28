@@ -8,6 +8,7 @@
         <top-banner/>
       </el-header>
       <el-main class="container-main">
+        <manager-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.MANAGER_MODULE" />
       </el-main>
     </el-container>
   </el-container>
@@ -17,12 +18,20 @@
 
 import TopBanner from './menu_module/TopBanner'
 import LeftMenu from './menu_module/LeftMenu'
+import ManagerModule from './ManagerModule'
+import {MODULE_STATES} from '../js/constvariable'
 
 export default {
   name: 'Main',
   components: {
     'top-banner': TopBanner,
-    'left-menu': LeftMenu
+    'left-menu': LeftMenu,
+    'manager-module': ManagerModule
+  },
+  data () {
+    return {
+      MODULE_STATES: MODULE_STATES
+    }
   }
 }
 </script>

@@ -30,7 +30,7 @@ const EDIT_STATUS = {
 // 你可以在你自己的模块下定义15个状态来，比如0x0001就是你为你自己的请购模块自定义的状态1，0x0002就是你为自定义的状态2
 // 然后在mainvue中写上你的模块<your-module v-show="this.$store.state."><your-module>
 const MODULE_STATES = {
-  STUDENT_MODULE: 0x0000 // 学生模块
+  MANAGER_MODULE: 0x0000 // 管理员模块
 }
 
 export {

@@ -14,6 +14,7 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 axios.defaults.baseURL = 'http://192.168.0.165:8090'
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 
 // eslint-disable-next-line no-new
 new Vue({

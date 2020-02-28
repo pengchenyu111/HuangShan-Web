@@ -11,7 +11,7 @@
       </template>
       <el-menu-item-group>
         <el-menu-item index="1-1">个人信息</el-menu-item>
-        <el-menu-item index="1-2">管理信息</el-menu-item>
+        <el-menu-item index="1-2" @click="setModuleState(MODULE_STATES.MANAGER_MODULE,EDIT_STATUS.STATUS_INITIAL)">管理信息</el-menu-item>
         <el-menu-item index="1-3">游客信息</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
@@ -38,10 +38,20 @@
 </template>
 <script>
 
+import {MODULE_STATES, EDIT_STATUS} from '../../js/constvariable'
 export default {
   name: 'LeftMenu',
   data () {
     return {
+      MODULE_STATES: MODULE_STATES,
+      EDIT_STATUS: EDIT_STATUS
+    }
+  },
+  methods: {
+    setModuleState (newState, editIndex, defaultInfo = {}) {
+      this.$store.commit('setModuleStatus', newState)
+      this.$store.commit('setEditState', editIndex)
+      this.$store.commit('setNewFormInfo', {info: defaultInfo})
     }
   }
 }
