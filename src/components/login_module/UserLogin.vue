@@ -1,7 +1,7 @@
 <template>
   <el-form class="inputLogin">
       <el-input
-        v-model="username"
+        v-model="account"
         placeholder="请输入账号"
         auto-complete="new-password"
         size="large"
@@ -28,7 +28,7 @@ export default {
   name: 'UserLogin',
   data () {
     return {
-      username: '',
+      account: '',
       password: ''
     }
   },
