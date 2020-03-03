@@ -47,58 +47,88 @@
       <el-table :data="bleData" class="searchTable">
         <el-table-column
           fixed label="序号"
-          width="200"
+          width="80"
           align="center">
           <template v-slot="scope">{{scope.$index + 1 + pageSize * (currentPage - 1)}}</template>
         </el-table-column>
         <el-table-column
-          prop="stuName"
-          label="管理员姓名"
+          label="头像"
+          width="80"
+          align="center">
+          <template v-slot="iconScope">
+            <el-avatar :size="45" :src="iconScope.row.headIcon"/>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="account"
+          label="工号"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="姓名"
           align="center">
         </el-table-column>
         <el-table-column
           label="性别"
           align="center">
           <template v-slot="sexScope">
-            <el-tag type="primary" v-if="sexScope.row.stuSex === '男'">男</el-tag>
-            <el-tag type="info" effect="dark" v-if="sexScope.row.stuSex === '女'">女</el-tag>
+            <el-tag type="primary" v-if="sexScope.row.sex === '男'">男</el-tag>
+            <el-tag type="info" v-if="sexScope.row.sex === '女'">女</el-tag>
           </template>
         </el-table-column>
         <el-table-column
-          prop="stuPhoneNum"
+          label="职位"
+          align="center">
+          <template v-slot="roleScope">
+            <el-tag type="primary" effect="dark" v-if="roleScope.row.roleName === '系统管理员'">系统管理员</el-tag>
+            <el-tag type="info" effect="dark" v-if="roleScope.row.roleName === '基础数据管理员'">基础数据管理员</el-tag>
+            <el-tag type="success" effect="dark" v-if="roleScope.row.roleName === '业务管理员'">业务管理员</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="workYear"
+          label="工龄"
+          width="50"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="phone"
           label="联系方式"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="stuCreateDate"
-          label="创建时间"
+          label="出生日期"
           align="center">
           <template v-slot="timeScope">
             <i class="el-icon-time"></i>
-            <span class="time-slot">{{timeScope.row.stuCreateDate}}</span>
+            <span class="time-slot">{{timeScope.row.birth}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="启用"
+          label="简介"
           align="center">
-          <template v-slot="scope">
-            <el-switch
-              v-model="scope.row.stuIsUse"
-              active-color="#00b0b8"
-              @change="changeIsUse(scope.row)"
-              :active-value="1"
-              :inactive-value="0">
-            </el-switch>
+          <template v-slot="introScope">
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover">
+              <p style="text-indent: 2em">{{introScope.row.introduction}}</p>
+              <el-button slot="reference" type="text" style="text-overflow:ellipsis">{{introScope.row.introduction}}</el-button>
+            </el-popover>
           </template>
         </el-table-column>
         <el-table-column
           label="操作"
           align="center"
-          width="100">
+          width="200">
           <template v-slot="Proscope">
-                <el-button type="primary" size="small" @click="edit_student(Proscope.row)" class="editButton">
-                  <i class="el-icon-edit">编辑</i>
-                </el-button>
+            <el-button type="primary" size="small" @click="edit_student(Proscope.row)" class="editButton">
+              <i class="el-icon-edit">编辑</i>
+            </el-button>
+            <el-button type="success" size="small" @click="edit_student(Proscope.row)" class="editButton">
+              <i class="el-icon-delete">删除</i>
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -128,7 +158,7 @@ export default {
     return {
       dataLength: 1,
       currentPage: 1,
-      pageSize: 7,
+      pageSize: 6,
       isSearch: false,
       inputName: '',
       tableData: [],
@@ -155,7 +185,7 @@ export default {
   computed: {
     bleData () {
       if (this.isSearch) {
-        let table = this.tableData.filter(data => (data.stuName.includes(this.inputName)) || data.stuPhoneNum.includes(this.inputName) || data.stuCreateDate.includes(this.inputName) || data.stuSex.includes(this.inputName))
+        let table = this.tableData.filter(data => (data.name.includes(this.inputName)) || data.phone.includes(this.inputName) || data.account.includes(this.inputName) || data.roleName.includes(this.inputName))
         this.changePages(table)
         if (table.length > this.pageSize) {
           return table.slice(this.pageSize * (this.currentPage - 1), this.pageSize * (this.currentPage - 1) + this.pageSize)
@@ -189,6 +219,16 @@ export default {
       this.currentPage = 1
     },
     getStudentData () {
+      this.axios.get('/admins/all')
+        .then((response) => {
+          this.tableData = []
+          for (let i = 0; i < response.data.data.length; i++) {
+            this.tableData.push(response.data.data[i])
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
     edit_student (row) {
       this.dialogFormVisible = true
