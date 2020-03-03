@@ -12,7 +12,7 @@
       <el-menu-item-group>
         <el-menu-item index="1-1">个人信息</el-menu-item>
         <el-menu-item index="1-2" @click="setModuleState(MODULE_STATES.MANAGER_MODULE,EDIT_STATUS.STATUS_INITIAL)">管理信息</el-menu-item>
-        <el-menu-item index="1-3">游客信息</el-menu-item>
+        <el-menu-item index="1-3" @click="setModuleState(MODULE_STATES.TOURIST_MODULE,EDIT_STATUS.STATUS_INITIAL)">游客信息</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-submenu index="2">
@@ -52,6 +52,7 @@ export default {
       this.$store.commit('setModuleStatus', newState)
       this.$store.commit('setEditState', editIndex)
       this.$store.commit('setNewFormInfo', {info: defaultInfo})
+      console.log(newState)
     }
   }
 }
