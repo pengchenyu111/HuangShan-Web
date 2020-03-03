@@ -10,6 +10,7 @@
       <el-main class="container-main">
         <manager-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.MANAGER_MODULE" />
         <tourist-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.TOURIST_MODULE" />
+        <notification-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.NOTIFICATION_MODULE"/>
       </el-main>
     </el-container>
   </el-container>
@@ -22,6 +23,7 @@ import LeftMenu from './menu_module/LeftMenu'
 import ManagerModule from './ManagerModule'
 import {MODULE_STATES} from '../js/constvariable'
 import TouristModule from './TouristModule'
+import NotificationModule from './NotificationModule'
 
 export default {
   name: 'Main',
@@ -29,7 +31,8 @@ export default {
     TouristModule,
     'top-banner': TopBanner,
     'left-menu': LeftMenu,
-    'manager-module': ManagerModule
+    'manager-module': ManagerModule,
+    'notification-module': NotificationModule
   },
   data () {
     return {

@@ -31,7 +31,7 @@
         <span>通知信息</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="3-1">通知信息</el-menu-item>
+        <el-menu-item index="3-1" @click="setModuleState(MODULE_STATES.NOTIFICATION_MODULE,EDIT_STATUS.STATUS_INITIAL)">通知信息</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>
