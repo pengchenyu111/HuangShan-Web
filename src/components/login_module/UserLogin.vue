@@ -51,6 +51,7 @@ export default {
               console.log(response)
               if (response.data.code === 809) {
                 functions.showSuccessMessage('登录成功')
+                this.$store.commit('setLoginInfo', response.data.data)
                 this.$router.push({name: 'Main'})
               } else {
                 functions.showErrorMessage('账号或密码错误')

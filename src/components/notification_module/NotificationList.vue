@@ -2,33 +2,40 @@
   <div>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">姓名：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">标题：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.stuName" placeholder="请输入姓名">
+          <el-input v-model="form.title" placeholder="请输入标题">
           </el-input>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="2" :offset="1"><div class="dialog-hint">性别：</div></el-col>
+        <el-col :span="2" :offset="1"><div class="dialog-hint">发送人：</div></el-col>
         <el-col :span="7">
-          <el-select v-model="form.stuSex" placeholder="请选择性别">
+          <el-input v-model="this.$store.state.memberInfo.name" disabled>
+          </el-input>
+        </el-col>
+      </el-row>
+      <el-row class="add-dialog-row">
+        <el-col :span="3"><div class="dialog-hint">类型：</div></el-col>
+        <el-col :span="7">
+          <el-select v-model="form.type" placeholder="请选择类型">
             <el-option
-              v-for="item in sexOptions"
+              v-for="item in typeOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
           </el-select>
         </el-col>
-      </el-row>
-      <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">联系方式：</div></el-col>
-        <el-col :span="7">
-          <el-input v-model="form.stuPhoneNum" placeholder="请输入联系方式"/>
-        </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
         <el-col :span="3"><div class="dialog-hint">创建时间：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.stuCreateDate" :disabled="true"/>
+          <el-input v-model="form.sendTime" :disabled="true"/>
+        </el-col>
+      </el-row>
+      <el-row class="add-dialog-row">
+        <el-col :span="3"><div class="dialog-hint">内容：</div></el-col>
+        <el-col :span="20">
+          <el-input type="textarea" rows="7" v-model="form.content"/>
         </el-col>
       </el-row>
       <div class="dialog-footer">
@@ -40,7 +47,7 @@
     <el-card shadow="hover" class="box-card">
       <el-row>
       <el-col :span="3">
-        <el-button type="primary" @click="new_student"><i class="el-icon-plus">新增通知</i></el-button>
+        <el-button type="primary" @click="new_notification"><i class="el-icon-plus">发布通知信息</i></el-button>
       </el-col>
     </el-row>
       <el-divider content-position="right">详细信息</el-divider>
@@ -53,7 +60,7 @@
         </el-table-column>
         <el-table-column
           prop="id"
-          width="100"
+          width="200"
           label="编号"
           align="center">
         </el-table-column>
@@ -71,7 +78,7 @@
         </el-table-column>
         <el-table-column
           label="内容"
-          width="300"
+          width="250"
           align="center">
           <template v-slot="contentScope">
             <el-popover
@@ -108,7 +115,7 @@
         </el-table-column>
         <el-table-column
           label="状态"
-          width="120"
+          width="90"
           align="center">
           <template v-slot="OpenScope">
             <el-switch
@@ -136,7 +143,7 @@
           width="200">
           <template v-slot="Proscope">
             <el-button type="primary" size="small" @click="edit_student(Proscope.row)" class="editButton">
-              <i class="el-icon-edit">详情</i>
+              <i class="el-icon-edit">编辑</i>
             </el-button>
             <el-button type="success" size="small" @click="deleteNotification(Proscope.row)" class="editButton">
               <i class="el-icon-delete">删除</i>
@@ -179,19 +186,26 @@ export default {
       dialogFormVisible: false,
       actionType: '', // 0 新增 1 编辑
       form: {
-        stuId: '',
-        stuName: '',
-        stuPhoneNum: '',
-        stuIsUse: '',
-        stuCreateDate: '',
-        stuSex: ''
+        sendAdminName: '',
+        title: '',
+        content: '',
+        sendTime: '',
+        id: '',
+        type: '',
+        isClose: '0'
       },
-      sexOptions: [{
-        value: '男',
-        label: '男'
+      typeOptions: [{
+        value: '0',
+        label: '紧急通知'
       }, {
-        value: '女',
-        label: '女'
+        value: '1',
+        label: '客流预警'
+      }, {
+        value: '2',
+        label: '天气预警'
+      }, {
+        value: '3',
+        label: '优惠通知'
       }]
     }
   },
@@ -274,7 +288,6 @@ export default {
     getNotificationData () {
       this.axios.get('/notifications/all')
         .then((response) => {
-          console.log(response)
           this.tableData = []
           for (let i = 0; i < response.data.data.length; i++) {
             if (response.data.data[i].isClose === '1') {
@@ -285,82 +298,71 @@ export default {
             this.tableData.push(response.data.data[i])
           }
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
+          functions.showErrorMessage('更新查询失败')
         })
     },
     edit_student (row) {
       this.dialogFormVisible = true
-      this.dialogTitle = '编辑管理员信息'
+      this.dialogTitle = '编辑通知信息'
       this.actionType = 1
-      this.form.stuId = row.stuId
-      this.form.stuCreateDate = row.stuCreateDate
-      this.form.stuName = row.stuName
-      this.form.stuSex = row.stuSex
-      this.form.stuPhoneNum = row.stuPhoneNum
+      this.form.title = row.title
+      this.form.id = row.id
+      this.form.content = row.content
+      this.form.sendTime = row.sendTime
+      this.form.sendAdminName = row.sendAdminName
+      this.form.type = row.type
     },
     cancel_dialog () {
       this.dialogFormVisible = false
     },
     confirm_dialog () {
       if (this.actionType === 0) {
-        this.form.stuSex = this.form.stuSex === '男' ? 0 : 1
-        this.axios.post('/student/addNewStudent', this.form)
+        this.form.sendAdminName = this.$store.state.memberInfo.name
+        this.axios.post('/notifications/', this.form)
           .then((res) => {
-            if (res.data.code === '0000') {
+            if (res.data.code === 800) {
               this.dialogFormVisible = false
-              functions.showSuccessMessage('新增学生成功')
-              this.getStudentData()
+              this.getNotificationData()
             } else {
-              this.dialogFormVisible = false
-              functions.showErrorMessage('新增学生失败')
+              functions.showErrorMessage('发布通知失败')
             }
-          })
-          .catch(function (error) {
-            this.dialogFormVisible = false
-            functions.showErrorMessage('新增学生失败')
-            console.log(error)
+          }).catch(() => {
+            functions.showErrorMessage('发布通知失败')
           })
       } else if (this.actionType === 1) {
-        this.form.stuSex = this.form.stuSex === '男' ? 0 : 1
-        this.axios.post('/student/editStudent', this.form)
+        this.form.sendAdminName = this.$store.state.memberInfo.name
+        this.axios.put('/notifications/' + this.form.id, this.form)
           .then((res) => {
-            if (res.data.code === '0000') {
+            if (res.data.code === 800) {
               this.dialogFormVisible = false
-              functions.showSuccessMessage('编辑学生信息成功')
-              this.getStudentData()
+              this.getNotificationData()
             } else {
-              this.dialogFormVisible = false
-              functions.showErrorMessage('编辑学生信息失败')
+              functions.showErrorMessage('编辑通知失败')
             }
-          })
-          .catch(function (error) {
-            this.dialogFormVisible = false
-            functions.showErrorMessage('编辑学生信息失败')
-            console.log(error)
+          }).catch(() => {
+            functions.showErrorMessage('编辑通知失败')
           })
       }
     },
-    new_student () {
+    new_notification () {
       this.dialogFormVisible = true
-      this.dialogTitle = '新增学生信息'
+      this.dialogTitle = '发布通知信息'
       this.actionType = 0
-      this.form.stuCreateDate = functions.getNowTime()
+      this.form.sendTime = functions.getNowTime()
     },
     changeIsUse (row) {
-      let url = row.id + ''
-      url = '/notifications/closes/' + url
+      let url = '/notifications/closes/' + row.id
       this.axios.put(url)
         .then((res) => {
-          if (res.data.code !== 800) {
-            functions.showErrorMessage('失败')
-            this.getNotificationData()
+          if (res.data.code === 800) {
+          } else {
+            functions.showErrorMessage('改变状态失败')
           }
         })
-        .catch(function (error) {
-          functions.showErrorMessage('失败')
+        .catch(() => {
+          functions.showErrorMessage('改变状态失败')
           this.getNotificationData()
-          console.log(error)
         })
     }
   },
@@ -368,12 +370,13 @@ export default {
     dialogFormVisible: function () {
       if (!this.dialogFormVisible) {
         // form 还原
-        this.form.stuId = ''
-        this.form.stuName = ''
-        this.form.stuPhoneNum = ''
-        this.form.stuIsUse = ''
-        this.form.stuCreateDate = ''
-        this.form.stuSex = ''
+        this.form.id = ''
+        this.form.title = ''
+        this.form.content = ''
+        this.form.sendAdminName = ''
+        this.form.type = ''
+        this.form.isClose = ''
+        this.form.sendTime = ''
       }
     }
   },
