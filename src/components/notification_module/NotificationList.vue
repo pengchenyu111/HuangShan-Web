@@ -138,7 +138,7 @@
             <el-button type="primary" size="small" @click="edit_student(Proscope.row)" class="editButton">
               <i class="el-icon-edit">详情</i>
             </el-button>
-            <el-button type="success" size="small" @click="edit_student(Proscope.row)" class="editButton">
+            <el-button type="success" size="small" @click="deleteNotification(Proscope.row)" class="editButton">
               <i class="el-icon-delete">删除</i>
             </el-button>
           </template>
@@ -198,7 +198,7 @@ export default {
   computed: {
     bleData () {
       if (this.isSearch) {
-        let table = this.tableData.filter(data => (data.name.includes(this.inputName)) || data.phone.includes(this.inputName) || data.account.includes(this.inputName))
+        let table = this.tableData.filter(data => (data.title.includes(this.inputName)) || data.content.includes(this.inputName))
         this.changePages(table)
         if (table.length > this.pageSize) {
           return table.slice(this.pageSize * (this.currentPage - 1), this.pageSize * (this.currentPage - 1) + this.pageSize)
@@ -215,6 +215,20 @@ export default {
     }
   },
   methods: {
+    deleteNotification (row) {
+      this.axios.delete('notifications/' + row.id)
+        .then((response) => {
+          if (response.data.code !== 800) {
+            functions.showErrorMessage('删除失败')
+          } else {
+            this.getNotificationData()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          functions.showErrorMessage('删除失败')
+        })
+    },
     getNotificationTypeColor (number) {
       let name = ''
       if (number === '0') {
@@ -338,9 +352,7 @@ export default {
       url = '/notifications/closes/' + url
       this.axios.put(url)
         .then((res) => {
-          if (res.data.code === 800) {
-            functions.showSuccessMessage('成功')
-          } else {
+          if (res.data.code !== 800) {
             functions.showErrorMessage('失败')
             this.getNotificationData()
           }
