@@ -1,16 +1,16 @@
 <template>
   <div>
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" class="el_dialog">
       <el-row class="add-dialog-row">
         <el-col :span="3"><div class="dialog-hint">姓名：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.stuName" placeholder="请输入姓名">
+          <el-input v-model="form.name" placeholder="请输入姓名">
           </el-input>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
         <el-col :span="2" :offset="1"><div class="dialog-hint">性别：</div></el-col>
         <el-col :span="7">
-          <el-select v-model="form.stuSex" placeholder="请选择性别">
+          <el-select v-model="form.sex" placeholder="请选择性别">
             <el-option
               v-for="item in sexOptions"
               :key="item.value"
@@ -21,14 +21,44 @@
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">联系方式：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">出生日期：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.stuPhoneNum" placeholder="请输入联系方式"/>
+          <el-date-picker
+            v-model="form.birth"
+            type="date"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期">
+          </el-date-picker>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="3"><div class="dialog-hint">创建时间：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">联系方式：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.stuCreateDate" :disabled="true"/>
+          <el-input v-model="form.phone" placeholder="请输入联系方式"/>
+        </el-col>
+      </el-row>
+      <el-row class="add-dialog-row">
+        <el-col :span="3"><div class="dialog-hint">角色：</div></el-col>
+        <el-col :span="7">
+          <el-select v-model="form.roleId" placeholder="请选择角色">
+            <el-option
+              v-for="item in roleOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="4"><div>&nbsp;</div></el-col>
+        <el-col :span="2"><div class="dialog-hint">工龄：</div></el-col>
+        <el-col :span="6">
+          <el-input-number v-model="form.workYear" controls-position="right" :min="0" :max="20"/>
+        </el-col>
+      </el-row>
+      <el-row class="add-dialog-row">
+        <el-col :span="3"><div class="dialog-hint">简介：</div></el-col>
+        <el-col :span="20">
+          <el-input type="textarea" rows="7" v-model="form.introduction"/>
         </el-col>
       </el-row>
       <div class="dialog-footer">
@@ -40,7 +70,7 @@
     <el-card shadow="hover" class="box-card">
       <el-row>
       <el-col :span="3">
-        <el-button type="primary" @click="new_student"><i class="el-icon-plus">新增管理员</i></el-button>
+        <el-button type="primary" @click="new_manager"><i class="el-icon-plus">新增管理员</i></el-button>
       </el-col>
     </el-row>
       <el-divider content-position="right">详细信息</el-divider>
@@ -126,7 +156,7 @@
             <el-button type="primary" size="small" @click="edit_student(Proscope.row)" class="editButton">
               <i class="el-icon-edit">编辑</i>
             </el-button>
-            <el-button type="success" size="small" @click="edit_student(Proscope.row)" class="editButton">
+            <el-button type="success" size="small" @click="delete_student(Proscope.row)" class="editButton">
               <i class="el-icon-delete">删除</i>
             </el-button>
           </template>
@@ -166,12 +196,14 @@ export default {
       dialogFormVisible: false,
       actionType: '', // 0 新增 1 编辑
       form: {
-        stuId: '',
-        stuName: '',
-        stuPhoneNum: '',
-        stuIsUse: '',
-        stuCreateDate: '',
-        stuSex: ''
+        id: '',
+        name: '',
+        roleId: '',
+        phone: '',
+        workYear: 1,
+        birth: '',
+        sex: '',
+        introduction: ''
       },
       sexOptions: [{
         value: '男',
@@ -179,13 +211,23 @@ export default {
       }, {
         value: '女',
         label: '女'
+      }],
+      roleOptions: [{
+        value: '系统管理员',
+        label: '系统管理员'
+      }, {
+        value: '基础数据管理员',
+        label: '基础数据管理员'
+      }, {
+        value: '业务管理员',
+        label: '业务管理员'
       }]
     }
   },
   computed: {
     bleData () {
       if (this.isSearch) {
-        let table = this.tableData.filter(data => (data.name.includes(this.inputName)) || data.phone.includes(this.inputName) || data.account.includes(this.inputName) || data.roleName.includes(this.inputName))
+        let table = this.tableData.filter(data => (data.name.includes(this.inputName)) || data.phone.includes(this.inputName) || data.account.includes(this.inputName) || data.roleId.includes(this.inputName))
         this.changePages(table)
         if (table.length > this.pageSize) {
           return table.slice(this.pageSize * (this.currentPage - 1), this.pageSize * (this.currentPage - 1) + this.pageSize)
@@ -218,13 +260,17 @@ export default {
       this.inputName = ''
       this.currentPage = 1
     },
-    getStudentData () {
+    sortId (a, b) {
+      return a.roleId < b.roleId
+    },
+    getManagerData () {
       this.axios.get('/admins/all')
         .then((response) => {
           this.tableData = []
           for (let i = 0; i < response.data.data.length; i++) {
             this.tableData.push(response.data.data[i])
           }
+          this.tableData.sort(this.sortId)
         })
         .catch((error) => {
           console.log(error)
@@ -234,59 +280,72 @@ export default {
       this.dialogFormVisible = true
       this.dialogTitle = '编辑管理员信息'
       this.actionType = 1
-      this.form.stuId = row.stuId
-      this.form.stuCreateDate = row.stuCreateDate
-      this.form.stuName = row.stuName
-      this.form.stuSex = row.stuSex
-      this.form.stuPhoneNum = row.stuPhoneNum
+      this.form.name = row.name
+      this.form.roleId = row.roleName
+      this.form.phone = row.phone
+      this.form.workYear = row.workYear
+      this.form.birth = row.birth
+      this.form.sex = row.sex
+      this.form.introduction = row.introduction
+      this.form.id = row.id
+    },
+    delete_student (row) {
+      this.axios.delete('admins/' + row.id)
+        .then((response) => {
+          if (response.data.code !== 800) {
+            functions.showErrorMessage('删除失败')
+          } else {
+            this.getManagerData()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          functions.showErrorMessage('删除失败')
+        })
     },
     cancel_dialog () {
       this.dialogFormVisible = false
     },
     confirm_dialog () {
       if (this.actionType === 0) {
-        this.form.stuSex = this.form.stuSex === '男' ? 0 : 1
-        this.axios.post('/student/addNewStudent', this.form)
+        if (this.form.roleId === '系统管理员') {
+          this.form.roleId = 1
+        } else if (this.form.roleId === '基础数据管理员') {
+          this.form.roleId = 2
+        } else {
+          this.form.roleId = 3
+        }
+        this.axios.post('/admins', this.form)
           .then((res) => {
-            if (res.data.code === '0000') {
+            if (res.data.code === 800) {
               this.dialogFormVisible = false
-              functions.showSuccessMessage('新增学生成功')
-              this.getStudentData()
+              this.getManagerData()
             } else {
-              this.dialogFormVisible = false
-              functions.showErrorMessage('新增学生失败')
+              functions.showErrorMessage('新增管理员失败')
             }
-          })
-          .catch(function (error) {
-            this.dialogFormVisible = false
-            functions.showErrorMessage('新增学生失败')
-            console.log(error)
+          }).catch(() => {
+            functions.showErrorMessage('新增管理员失败')
           })
       } else if (this.actionType === 1) {
-        this.form.stuSex = this.form.stuSex === '男' ? 0 : 1
-        this.axios.post('/student/editStudent', this.form)
+        this.form.roleName = this.form.roleId
+        console.log(this.form)
+        this.axios.put('/admins/part/' + this.form.id, this.form)
           .then((res) => {
-            if (res.data.code === '0000') {
+            if (res.data.code === 800) {
               this.dialogFormVisible = false
-              functions.showSuccessMessage('编辑学生信息成功')
-              this.getStudentData()
+              this.getManagerData()
             } else {
-              this.dialogFormVisible = false
-              functions.showErrorMessage('编辑学生信息失败')
+              functions.showErrorMessage('编辑管理员信息失败')
             }
-          })
-          .catch(function (error) {
-            this.dialogFormVisible = false
-            functions.showErrorMessage('编辑学生信息失败')
-            console.log(error)
+          }).catch(() => {
+            functions.showErrorMessage('编辑管理员信息失败')
           })
       }
     },
-    new_student () {
+    new_manager () {
       this.dialogFormVisible = true
-      this.dialogTitle = '新增学生信息'
+      this.dialogTitle = '新增管理员信息'
       this.actionType = 0
-      this.form.stuCreateDate = functions.getNowTime()
     },
     changeIsUse (row) {
       let param = {
@@ -310,17 +369,19 @@ export default {
     dialogFormVisible: function () {
       if (!this.dialogFormVisible) {
         // form 还原
-        this.form.stuId = ''
-        this.form.stuName = ''
-        this.form.stuPhoneNum = ''
-        this.form.stuIsUse = ''
-        this.form.stuCreateDate = ''
-        this.form.stuSex = ''
+        this.form.name = ''
+        this.form.roleId = ''
+        this.form.phone = ''
+        this.form.workYear = 1
+        this.form.birth = ''
+        this.form.sex = ''
+        this.form.introduction = ''
+        this.form.id = ''
       }
     }
   },
   created () {
-    this.getStudentData()
+    this.getManagerData()
   }
 }
 </script>
@@ -342,7 +403,7 @@ export default {
     position: relative;
   }
   .add-dialog-row{
-    margin-bottom: 20px;
+    margin-bottom: 28px;
   }
   .time-slot{
     margin-left: 5px;
