@@ -1,16 +1,25 @@
 <template>
   <div>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+      <div class="item_bock head_p" v-if="actionType === 1">
+        <div class="head_img">
+          <img :src="form.headIcon"/>
+        </div>
+        <div class="setting_right" @click.stop="uploadHeadImg">
+          <div class="caption">更改头像</div>
+        </div>
+        <input type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>
+      </div>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">姓名：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">联系方式：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.stuName" placeholder="请输入姓名">
+          <el-input v-model="form.phone" placeholder="请输入联系方式" maxlength="11">
           </el-input>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
         <el-col :span="2" :offset="1"><div class="dialog-hint">性别：</div></el-col>
         <el-col :span="7">
-          <el-select v-model="form.stuSex" placeholder="请选择性别">
+          <el-select v-model="form.sex" placeholder="请选择性别">
             <el-option
               v-for="item in sexOptions"
               :key="item.value"
@@ -21,15 +30,40 @@
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">联系方式：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">出生日期：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.stuPhoneNum" placeholder="请输入联系方式"/>
+          <el-date-picker
+            v-model="form.birth"
+            type="date"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期">
+          </el-date-picker>
+        </el-col>
+        <el-col :span="4"><div>&nbsp;</div></el-col>
+        <el-col :span="2"><div class="dialog-hint">密码：</div></el-col>
+        <el-col :span="7">
+          <el-input v-model="form.password" placeholder="请输入密码" show-password/>
+        </el-col>
+      </el-row>
+      <el-row class="add-dialog-row">
+        <el-col :span="3"><div class="dialog-hint">账号：</div></el-col>
+        <el-col :span="7">
+          <el-input v-model="form.phone" placeholder="与联系方式相同" disabled/>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="3"><div class="dialog-hint">创建时间：</div></el-col>
-        <el-col :span="7">
-          <el-input v-model="form.stuCreateDate" :disabled="true"/>
-        </el-col>
+        <div v-if="actionType === 0">
+          <el-col :span="3"><div class="dialog-hint">创建时间：</div></el-col>
+          <el-col :span="7">
+            <el-input v-model="form.stuCreateDate" :disabled="true"/>
+          </el-col>
+        </div>
+        <div v-if="actionType === 1">
+          <el-col :span="3"><div class="dialog-hint">游客姓名：</div></el-col>
+          <el-col :span="7">
+            <el-input v-model="form.name"/>
+          </el-col>
+        </div>
       </el-row>
       <div class="dialog-footer">
         <el-button @click="cancel_dialog">取 消</el-button>
@@ -59,7 +93,7 @@
         </el-table-column>
         <el-table-column
           prop="account"
-          label="工号"
+          label="账号"
           align="center">
         </el-table-column>
         <el-table-column
@@ -101,7 +135,7 @@
             <el-button type="primary" size="small" @click="edit_student(Proscope.row)" class="editButton">
               <i class="el-icon-edit">编辑</i>
             </el-button>
-            <el-button type="success" size="small" @click="edit_student(Proscope.row)" class="editButton">
+            <el-button type="success" size="small" @click="delete_tourist(Proscope.row)" class="editButton">
               <i class="el-icon-delete">删除</i>
             </el-button>
           </template>
@@ -131,6 +165,7 @@ export default {
   },
   data () {
     return {
+      img: '',
       dataLength: 1,
       currentPage: 1,
       pageSize: 6,
@@ -141,12 +176,14 @@ export default {
       dialogFormVisible: false,
       actionType: '', // 0 新增 1 编辑
       form: {
-        stuId: '',
-        stuName: '',
-        stuPhoneNum: '',
-        stuIsUse: '',
-        stuCreateDate: '',
-        stuSex: ''
+        id: '',
+        account: '',
+        password: '',
+        name: '',
+        phone: '',
+        birth: '',
+        sex: '',
+        headIcon: ''
       },
       sexOptions: [{
         value: '男',
@@ -177,6 +214,35 @@ export default {
     }
   },
   methods: {
+    uploadHeadImg () {
+      this.$el.querySelector('.hiddenInput').click()
+    },
+    // 将头像显示
+    handleFile (e) {
+      let $target = e.target || e.srcElement
+      this.img = $target.files[0]
+      let reader = new FileReader()
+      reader.onload = (data) => {
+        let res = data.target || data.srcElement
+        this.form.headIcon = res.result
+      }
+      reader.readAsDataURL(this.img)
+      let params = new FormData()
+      params.append('file', this.img)
+      params.append('account', this.form.account)
+      let config = {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }
+      this.axios.post('http://101.37.173.73:9000/uploadFileByAccount', params, config)
+        .then((res) => {
+          this.form.headIcon = res.data.fileUri
+          functions.showSuccessMessage('已上传未保存头像')
+        })
+        .catch((error) => {
+          console.log(error)
+          functions.showSuccessMessage('头像上传失败')
+        })
+    },
     handleCurrentChange (val) {
       this.currentPage = val
     },
@@ -209,57 +275,84 @@ export default {
       this.dialogFormVisible = true
       this.dialogTitle = '编辑管理员信息'
       this.actionType = 1
-      this.form.stuId = row.stuId
-      this.form.stuCreateDate = row.stuCreateDate
-      this.form.stuName = row.stuName
-      this.form.stuSex = row.stuSex
-      this.form.stuPhoneNum = row.stuPhoneNum
+      this.form.id = row.id
+      this.form.account = row.account
+      this.form.password = ''
+      this.form.name = row.name
+      this.form.phone = row.phone
+      this.form.birth = row.birth
+      this.form.sex = row.sex
+      this.form.headIcon = row.headIcon
+    },
+    delete_tourist (row) {
+      this.axios.delete('tourists/' + row.id)
+        .then((response) => {
+          console.log(response)
+          if (response.data.code !== 800) {
+            functions.showErrorMessage('删除失败')
+          } else {
+            this.getTouristData()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          functions.showErrorMessage('删除失败')
+        })
     },
     cancel_dialog () {
       this.dialogFormVisible = false
     },
     confirm_dialog () {
+      console.log(this.form)
       if (this.actionType === 0) {
-        this.form.stuSex = this.form.stuSex === '男' ? 0 : 1
-        this.axios.post('/student/addNewStudent', this.form)
+        console.log(this.form)
+        this.axios.post('/tourists', this.form)
           .then((res) => {
-            if (res.data.code === '0000') {
+            if (res.data.code === 800) {
               this.dialogFormVisible = false
-              functions.showSuccessMessage('新增学生成功')
-              this.getStudentData()
+              this.getTouristData()
             } else {
-              this.dialogFormVisible = false
-              functions.showErrorMessage('新增学生失败')
+              functions.showErrorMessage('新增管理员失败')
             }
-          })
-          .catch(function (error) {
-            this.dialogFormVisible = false
-            functions.showErrorMessage('新增学生失败')
-            console.log(error)
+          }).catch(() => {
+            functions.showErrorMessage('新增管理员失败')
           })
       } else if (this.actionType === 1) {
-        this.form.stuSex = this.form.stuSex === '男' ? 0 : 1
-        this.axios.post('/student/editStudent', this.form)
+        let params = {
+          id: this.form.id,
+          account: this.form.account,
+          password: this.form.password,
+          name: this.form.name,
+          phone: this.form.phone,
+          birth: this.form.birth,
+          sex: this.form.sex,
+          headIcon: this.form.headIcon
+        }
+        console.log(this.form)
+        console.log(params)
+        this.axios.put('/tourists/' + this.form.id, params)
           .then((res) => {
-            if (res.data.code === '0000') {
-              this.dialogFormVisible = false
-              functions.showSuccessMessage('编辑学生信息成功')
-              this.getStudentData()
+            if (res.data.code === 800) {
+              this.axios.put('/tourists/passwords/' + this.form.id, params)
+                .then((result) => {
+                  if (result.data.code === 800) {
+                    this.dialogFormVisible = false
+                    this.getTouristData()
+                  } else {
+                    functions.showErrorMessage('修改密码失败')
+                  }
+                })
             } else {
-              this.dialogFormVisible = false
-              functions.showErrorMessage('编辑学生信息失败')
+              functions.showErrorMessage('编辑游客信息失败')
             }
-          })
-          .catch(function (error) {
-            this.dialogFormVisible = false
-            functions.showErrorMessage('编辑学生信息失败')
-            console.log(error)
+          }).catch(() => {
+            functions.showErrorMessage('编辑游客信息失败')
           })
       }
     },
     new_student () {
       this.dialogFormVisible = true
-      this.dialogTitle = '新增学生信息'
+      this.dialogTitle = '新增游客信息'
       this.actionType = 0
       this.form.stuCreateDate = functions.getNowTime()
     },
@@ -285,12 +378,13 @@ export default {
     dialogFormVisible: function () {
       if (!this.dialogFormVisible) {
         // form 还原
-        this.form.stuId = ''
-        this.form.stuName = ''
-        this.form.stuPhoneNum = ''
-        this.form.stuIsUse = ''
-        this.form.stuCreateDate = ''
-        this.form.stuSex = ''
+        this.form.id = ''
+        this.form.account = ''
+        this.form.password = ''
+        this.form.name = ''
+        this.form.phone = ''
+        this.form.birth = ''
+        this.form.sex = ''
       }
     }
   },
@@ -321,5 +415,40 @@ export default {
   }
   .time-slot{
     margin-left: 5px;
+  }
+  .item_bock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height:94px;
+    width: 300px;
+    padding:0px 24px 0px 38px;
+    border-bottom: 1px solid #f7f7f7;
+    background: #fff;
+  }
+  .head_p {
+    height:132px;
+  }
+  .head_img{
+    height: 90px;
+  }
+  .head_img img{
+    width:90px;
+    height:90px;
+    border-radius:50px
+  }
+  .setting_right{
+    display: flex;
+    height: 37px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .hiddenInput{
+    display: none;
+  }
+  .caption {
+    color: #8F8F8F;
+    font-size: 26px;
+    height: 37px;
   }
 </style>

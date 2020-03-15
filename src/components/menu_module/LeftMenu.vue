@@ -52,7 +52,6 @@ export default {
       this.$store.commit('setModuleStatus', newState)
       this.$store.commit('setEditState', editIndex)
       this.$store.commit('setNewFormInfo', {info: defaultInfo})
-      console.log(newState)
     }
   }
 }

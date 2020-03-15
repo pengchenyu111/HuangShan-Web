@@ -4,6 +4,7 @@ const state = {
   saveState: 0,
   submitState: false,
   memberInfo: '',
+  avatar: '',
   infoCache: {
     info: {}, // 信息
     flag: '' // 标志
