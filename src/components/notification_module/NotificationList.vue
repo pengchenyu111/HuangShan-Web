@@ -10,7 +10,7 @@
         <el-col :span="3"><div>&nbsp;</div></el-col>
         <el-col :span="2" :offset="1"><div class="dialog-hint">发送人：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="this.$store.state.memberInfo.name" disabled>
+          <el-input v-model="form.sendAdminName" disabled>
           </el-input>
         </el-col>
       </el-row>
@@ -318,7 +318,6 @@ export default {
     },
     confirm_dialog () {
       if (this.actionType === 0) {
-        this.form.sendAdminName = this.$store.state.memberInfo.name
         this.axios.post('/notifications/', this.form)
           .then((res) => {
             if (res.data.code === 800) {
@@ -331,7 +330,6 @@ export default {
             functions.showErrorMessage('发布通知失败')
           })
       } else if (this.actionType === 1) {
-        this.form.sendAdminName = this.$store.state.memberInfo.name
         this.axios.put('/notifications/' + this.form.id, this.form)
           .then((res) => {
             if (res.data.code === 800) {
@@ -349,6 +347,7 @@ export default {
       this.dialogFormVisible = true
       this.dialogTitle = '发布通知信息'
       this.actionType = 0
+      this.form.sendAdminName = sessionStorage.getItem('name')
       this.form.sendTime = functions.getNowTime()
     },
     changeIsUse (row) {
