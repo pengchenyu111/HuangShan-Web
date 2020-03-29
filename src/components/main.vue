@@ -11,6 +11,7 @@
         <manager-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.MANAGER_MODULE" />
         <tourist-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.TOURIST_MODULE" />
         <notification-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.NOTIFICATION_MODULE"/>
+        <daily-num-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.DAILYNUM_MODULE"/>
       </el-main>
     </el-container>
   </el-container>
@@ -24,6 +25,7 @@ import ManagerModule from './ManagerModule'
 import {MODULE_STATES} from '../js/constvariable'
 import TouristModule from './TouristModule'
 import NotificationModule from './NotificationModule'
+import DailyNumModule from './DailyNumModule'
 
 export default {
   name: 'Main',
@@ -32,7 +34,8 @@ export default {
     'top-banner': TopBanner,
     'left-menu': LeftMenu,
     'manager-module': ManagerModule,
-    'notification-module': NotificationModule
+    'notification-module': NotificationModule,
+    'daily-num-module': DailyNumModule
   },
   data () {
     return {

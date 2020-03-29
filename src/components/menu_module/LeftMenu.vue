@@ -21,7 +21,7 @@
         <span>客流信息</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="2-1">每日客流</el-menu-item>
+        <el-menu-item index="2-1" @click="setModuleState(MODULE_STATES.DAILYNUM_MODULE,EDIT_STATUS.STATUS_INITIAL)">每日客流</el-menu-item>
         <el-menu-item index="2-2">每时客流</el-menu-item>
       </el-menu-item-group>
     </el-submenu>

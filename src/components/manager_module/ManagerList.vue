@@ -227,7 +227,7 @@ export default {
   computed: {
     bleData () {
       if (this.isSearch) {
-        let table = this.tableData.filter(data => (data.name.includes(this.inputName)) || data.phone.includes(this.inputName) || data.account.includes(this.inputName) || data.roleId.includes(this.inputName))
+        let table = this.tableData.filter(data => (data.name.includes(this.inputName)) || data.phone.includes(this.inputName) || data.account.includes(this.inputName))
         this.changePages(table)
         if (table.length > this.pageSize) {
           return table.slice(this.pageSize * (this.currentPage - 1), this.pageSize * (this.currentPage - 1) + this.pageSize)
