@@ -156,7 +156,7 @@
             <el-button type="primary" size="small" @click="edit_student(Proscope.row)" class="editButton">
               <i class="el-icon-edit">编辑</i>
             </el-button>
-            <el-button type="success" size="small" @click="delete_student(Proscope.row)" class="editButton">
+            <el-button type="success" size="small" @click="delete_student(Proscope.row)" class="editButton" :disabled="Proscope.row.account === myAccount">
               <i class="el-icon-delete">删除</i>
             </el-button>
           </template>
@@ -186,6 +186,7 @@ export default {
   },
   data () {
     return {
+      myAccount: sessionStorage.getItem('account'),
       dataLength: 1,
       currentPage: 1,
       pageSize: 6,

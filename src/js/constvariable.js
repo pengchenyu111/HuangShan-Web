@@ -41,7 +41,13 @@ const MODULE_STATES = {
   // 景点管理
   SCENIC_MODULE: 0x0040,
   // 酒店管理
-  HOTEL_MODULE: 0x0050
+  HOTEL_MODULE: 0x0050,
+  // 客流量预测
+  DAILYNUM_PREDICT_MODULE: 0x0060,
+  // 小时客流量
+  HOURLYNUM_MODULE: 0x0070,
+  // 管理小时数据
+  HOURLYMANAGE_MODULE: 0x0080
 }
 
 export {

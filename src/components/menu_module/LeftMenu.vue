@@ -22,7 +22,9 @@
       </template>
       <el-menu-item-group>
         <el-menu-item index="2-1" @click="setModuleState(MODULE_STATES.DAILYNUM_MODULE,EDIT_STATUS.STATUS_INITIAL)">每日客流</el-menu-item>
-        <el-menu-item index="2-2">每时客流</el-menu-item>
+        <el-menu-item index="2-2" @click="setModuleState(MODULE_STATES.DAILYNUM_PREDICT_MODULE,EDIT_STATUS.STATUS_INITIAL)">客流预测</el-menu-item>
+        <el-menu-item index="2-3" @click="setModuleState(MODULE_STATES.HOURLYMANAGE_MODULE,EDIT_STATUS.STATUS_INITIAL)">每时客流</el-menu-item>
+        <el-menu-item index="2-4" @click="setModuleState(MODULE_STATES.HOURLYNUM_MODULE,EDIT_STATUS.STATUS_INITIAL)">每时图示</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-submenu index="3">

@@ -14,6 +14,9 @@
         <daily-num-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.DAILYNUM_MODULE"/>
         <scenic-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.SCENIC_MODULE"/>
         <hotel-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.HOTEL_MODULE"/>
+        <daily-num-predict-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.DAILYNUM_PREDICT_MODULE"/>
+        <hourly-num-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.HOURLYNUM_MODULE"/>
+        <hourly-num-manage-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.HOURLYMANAGE_MODULE"/>
       </el-main>
     </el-container>
   </el-container>
@@ -30,10 +33,16 @@ import NotificationModule from './NotificationModule'
 import DailyNumModule from './DailyNumModule'
 import ScenicModule from './ScenicModule'
 import HotelModule from './HotelModule'
+import DailyNumPredictModule from './DailyNumPredictModule'
+import HourlyNumModule from './HourlyNumModule'
+import HourlyNumManageModule from './HourlyNumManageModule'
 
 export default {
   name: 'Main',
   components: {
+    HourlyNumManageModule,
+    HourlyNumModule,
+    DailyNumPredictModule,
     HotelModule,
     ScenicModule,
     TouristModule,

@@ -53,6 +53,7 @@ export default {
                 functions.showSuccessMessage('登录成功')
                 this.$store.commit('setLoginInfo', response.data.data)
                 sessionStorage.setItem('headIcon', response.data.data.headIcon)
+                sessionStorage.setItem('account', response.data.data.account)
                 sessionStorage.setItem('name', response.data.data.name)
                 sessionStorage.setItem('token', 'true')
                 this.$router.push({name: 'Main'})
