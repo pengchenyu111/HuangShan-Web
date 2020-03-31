@@ -12,6 +12,8 @@
         <tourist-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.TOURIST_MODULE" />
         <notification-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.NOTIFICATION_MODULE"/>
         <daily-num-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.DAILYNUM_MODULE"/>
+        <scenic-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.SCENIC_MODULE"/>
+        <hotel-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.HOTEL_MODULE"/>
       </el-main>
     </el-container>
   </el-container>
@@ -26,10 +28,14 @@ import {MODULE_STATES} from '../js/constvariable'
 import TouristModule from './TouristModule'
 import NotificationModule from './NotificationModule'
 import DailyNumModule from './DailyNumModule'
+import ScenicModule from './ScenicModule'
+import HotelModule from './HotelModule'
 
 export default {
   name: 'Main',
   components: {
+    HotelModule,
+    ScenicModule,
     TouristModule,
     'top-banner': TopBanner,
     'left-menu': LeftMenu,

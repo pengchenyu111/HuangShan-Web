@@ -34,6 +34,24 @@
         <el-menu-item index="3-1" @click="setModuleState(MODULE_STATES.NOTIFICATION_MODULE,EDIT_STATUS.STATUS_INITIAL)">通知信息</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
+    <el-submenu index="4">
+      <template slot="title">
+        <i class="el-icon-location-information"/>
+        <span>景点信息</span>
+      </template>
+      <el-menu-item-group>
+        <el-menu-item index="4-1" @click="setModuleState(MODULE_STATES.SCENIC_MODULE,EDIT_STATUS.STATUS_INITIAL)">景点信息</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
+    <el-submenu index="5">
+      <template slot="title">
+        <i class="el-icon-office-building"/>
+        <span>酒店信息</span>
+      </template>
+      <el-menu-item-group>
+        <el-menu-item index="4-1" @click="setModuleState(MODULE_STATES.HOTEL_MODULE,EDIT_STATUS.STATUS_INITIAL)">酒店信息</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
   </el-menu>
 </template>
 <script>

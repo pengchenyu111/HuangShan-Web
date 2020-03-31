@@ -37,7 +37,11 @@ const MODULE_STATES = {
   // 通知模块
   NOTIFICATION_MODULE: 0x0020,
   // 每日客流量
-  DAILYNUM_MODULE: 0x0030
+  DAILYNUM_MODULE: 0x0030,
+  // 景点管理
+  SCENIC_MODULE: 0x0040,
+  // 酒店管理
+  HOTEL_MODULE: 0x0050
 }
 
 export {

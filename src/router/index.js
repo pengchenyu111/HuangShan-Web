@@ -5,7 +5,7 @@ import main from '../components/main'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -15,8 +15,28 @@ export default new Router({
     {
       path: '/main',
       name: 'Main',
-      component: main
+      component: main,
+      meta: {
+        requireAuth: true
+      }
     }
   ],
   mode: 'history'
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
+    if (sessionStorage.getItem('token') === 'true') {
+      next()
+    } else {
+      // 未登录,跳转到登陆页面
+      next({
+        path: '/'
+      })
+    }
+  } else {
+    next()
+  }
+})
+
+export default router

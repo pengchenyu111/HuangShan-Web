@@ -2,40 +2,42 @@
   <div>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">标题：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">编号：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.title" placeholder="请输入标题">
+          <el-input v-model="form.code" placeholder="请输入编号">
           </el-input>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="2" :offset="1"><div class="dialog-hint">发送人：</div></el-col>
+        <el-col :span="2" :offset="1"><div class="dialog-hint">景区名：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.sendAdminName" disabled>
+          <el-input v-model="form.name" placeholder="请输入景区名">
           </el-input>
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">类型：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">经度：</div></el-col>
         <el-col :span="7">
-          <el-select v-model="form.type" placeholder="请选择类型">
-            <el-option
-              v-for="item in typeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <el-input v-model="form.longitude" placeholder="请输入经度">
+          </el-input>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="3"><div class="dialog-hint">创建时间：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">纬度：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.sendTime" :disabled="true"/>
+          <el-input v-model="form.latitude" placeholder="请输入纬度">
+          </el-input>
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">内容：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">票价：</div></el-col>
+        <el-col :span="7">
+          <el-input v-model="form.ticketPrice" placeholder="请输入票价">
+          </el-input>
+        </el-col>
+      </el-row>
+      <el-row class="add-dialog-row">
+        <el-col :span="3"><div class="dialog-hint">描述：</div></el-col>
         <el-col :span="20">
-          <el-input type="textarea" rows="7" v-model="form.content"/>
+          <el-input type="textarea" rows="5" placeholder="请输入描述信息" v-model="form.description"/>
         </el-col>
       </el-row>
       <div class="dialog-footer">
@@ -43,104 +45,64 @@
         <el-button type="primary" @click="confirm_dialog">确 定</el-button>
       </div>
     </el-dialog>
-    <tourist-search @inputFilter="filtering" @inputReset="resett"/>
+    <scenic-search @inputFilter="filtering" @inputReset="resett"/>
     <el-card shadow="hover" class="box-card">
       <el-row>
       <el-col :span="3">
-        <el-button type="primary" @click="new_notification"><i class="el-icon-plus">发布通知信息</i></el-button>
+        <el-button type="primary" @click="new_notification"><i class="el-icon-plus">新增景区信息</i></el-button>
       </el-col>
     </el-row>
       <el-divider content-position="right">详细信息</el-divider>
       <el-table :data="bleData" class="searchTable">
         <el-table-column
           fixed label="序号"
-          width="80"
           align="center">
           <template v-slot="scope">{{scope.$index + 1 + pageSize * (currentPage - 1)}}</template>
         </el-table-column>
         <el-table-column
-          prop="id"
-          width="200"
+          prop="code"
           label="编号"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="title"
-          label="标题"
-          width="120"
+          prop="name"
+          label="景区名"
           align="center">
-          <template v-slot="titleScope">
-            <el-tooltip placement="top" effect="light">
-              <div slot="content">{{titleScope.row.title}}</div>
-              <el-tag style="width: 100px; text-overflow:ellipsis; overflow: hidden;">{{titleScope.row.title}}</el-tag>
-            </el-tooltip>
-          </template>
         </el-table-column>
         <el-table-column
-          label="内容"
-          width="250"
+          label="描述"
           align="center">
           <template v-slot="contentScope">
             <el-popover
+              v-if="contentScope.row.description !== null"
               placement="top-start"
               width="280"
               trigger="hover">
-              <p style="text-indent: 2em">{{contentScope.row.content}}</p>
-              <el-button slot="reference" type="text" style="text-overflow:ellipsis">{{contentScope.row.content}}</el-button>
+              <p style="text-indent: 2em">{{contentScope.row.description}}</p>
+              <el-button slot="reference" size="small" type="text" style="text-overflow:ellipsis">{{contentScope.row.description}}</el-button>
             </el-popover>
+            <el-tag type="info" v-if="contentScope.row.description === null">无描述</el-tag>
           </template>
         </el-table-column>
         <el-table-column
-          prop="type"
-          width="120"
-          label="类别"
-          align="center">
-          <template v-slot="typeScope">
-            <el-tag :type="getNotificationTypeColor(typeScope.row.type)" effect="dark">{{getNotificationType(typeScope.row.type)}}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="sendAdminName"
-          label="发送人"
-          width="100"
+          prop="ticketPrice"
+          label="票价"
           align="center">
         </el-table-column>
         <el-table-column
-          label="发送时间"
+          prop="longitude"
+          label="经度"
           align="center">
-          <template v-slot="timeScope">
-            <i class="el-icon-time"/>
-            <span class="time-slot">{{timeScope.row.sendTime}}</span>
-          </template>
         </el-table-column>
         <el-table-column
-          label="状态"
-          width="90"
+          prop="latitude"
+          label="纬度"
           align="center">
-          <template v-slot="OpenScope">
-            <el-switch
-              v-model="OpenScope.row.isClose"
-              v-if="OpenScope.row.isClose === 0"
-              active-color="#0bd077"
-              @change="changeIsUse(OpenScope.row)"
-              :active-value="0"
-              :inactive-value="1">
-            </el-switch>
-            <el-switch
-              v-model="OpenScope.row.isClose"
-              v-if="OpenScope.row.isClose === 1"
-              active-color="#0bd077"
-              disabled
-              @change="changeIsUse(OpenScope.row)"
-              :active-value="0"
-              :inactive-value="1">
-            </el-switch>
-          </template>
         </el-table-column>
         <el-table-column
           label="操作"
-          align="center"
-          width="200">
+          width="200"
+          align="center">
           <template v-slot="Proscope">
             <el-button type="primary" size="small" @click="edit_student(Proscope.row)" class="editButton">
               <i class="el-icon-edit">编辑</i>
@@ -165,20 +127,20 @@
 </template>
 
 <script>
-import TouristSearch from './NotificationSearch'
+import ScenicSearch from './ScenicSearch'
 import {functions} from '../../js/function'
 
 export default {
-  name: 'ManagerList',
+  name: 'ScenicList',
   components: {
-    'tourist-search': TouristSearch
+    ScenicSearch
   },
   data () {
     return {
       valueFalse: false,
       dataLength: 1,
       currentPage: 1,
-      pageSize: 7,
+      pageSize: 8,
       isSearch: false,
       inputName: '',
       tableData: [],
@@ -186,33 +148,22 @@ export default {
       dialogFormVisible: false,
       actionType: '', // 0 新增 1 编辑
       form: {
-        sendAdminName: '',
-        title: '',
-        content: '',
-        sendTime: '',
         id: '',
-        type: '',
-        isClose: '0'
-      },
-      typeOptions: [{
-        value: '0',
-        label: '紧急通知'
-      }, {
-        value: '1',
-        label: '客流预警'
-      }, {
-        value: '2',
-        label: '天气预警'
-      }, {
-        value: '3',
-        label: '优惠通知'
-      }]
+        name: '',
+        code: '',
+        description: '',
+        openTime: '',
+        ticketPrice: '',
+        isClose: '',
+        longitude: '',
+        latitude: ''
+      }
     }
   },
   computed: {
     bleData () {
       if (this.isSearch) {
-        let table = this.tableData.filter(data => (data.title.includes(this.inputName)) || data.content.includes(this.inputName))
+        let table = this.tableData.filter(data => (data.code.includes(this.inputName)) || data.name.includes(this.inputName))
         this.changePages(table)
         if (table.length > this.pageSize) {
           return table.slice(this.pageSize * (this.currentPage - 1), this.pageSize * (this.currentPage - 1) + this.pageSize)
@@ -230,44 +181,18 @@ export default {
   },
   methods: {
     deleteNotification (row) {
-      this.axios.delete('notifications/' + row.id)
+      this.axios.delete('/scenics/' + row.id)
         .then((response) => {
           if (response.data.code !== 800) {
             functions.showErrorMessage('删除失败')
           } else {
-            this.getNotificationData()
+            this.getScenicData()
           }
         })
         .catch((error) => {
           console.log(error)
           functions.showErrorMessage('删除失败')
         })
-    },
-    getNotificationTypeColor (number) {
-      let name = ''
-      if (number === '0') {
-        name = 'danger'
-      } else if (number === '1') {
-        name = 'warning'
-      } else if (number === '2') {
-        name = 'warning'
-      } else {
-        name = 'success'
-      }
-      return name
-    },
-    getNotificationType (number) {
-      let name = ''
-      if (number === '0') {
-        name = '紧急通知'
-      } else if (number === '1') {
-        name = '客流预警'
-      } else if (number === '2') {
-        name = '天气预警'
-      } else {
-        name = '优惠通知'
-      }
-      return name
     },
     handleCurrentChange (val) {
       this.currentPage = val
@@ -285,16 +210,11 @@ export default {
       this.inputName = ''
       this.currentPage = 1
     },
-    getNotificationData () {
-      this.axios.get('/notifications/all')
+    getScenicData () {
+      this.axios.get('/scenics/all')
         .then((response) => {
           this.tableData = []
           for (let i = 0; i < response.data.data.length; i++) {
-            if (response.data.data[i].isClose === '1') {
-              response.data.data[i].isClose = 1
-            } else {
-              response.data.data[i].isClose = 0
-            }
             this.tableData.push(response.data.data[i])
           }
         })
@@ -304,25 +224,26 @@ export default {
     },
     edit_student (row) {
       this.dialogFormVisible = true
-      this.dialogTitle = '编辑通知信息'
+      this.dialogTitle = '编辑景区信息'
       this.actionType = 1
-      this.form.title = row.title
       this.form.id = row.id
-      this.form.content = row.content
-      this.form.sendTime = row.sendTime
-      this.form.sendAdminName = row.sendAdminName
-      this.form.type = row.type
+      this.form.code = row.code
+      this.form.name = row.name
+      this.form.description = row.description
+      this.form.ticketPrice = row.ticketPrice
+      this.form.longitude = row.longitude
+      this.form.latitude = row.latitude
     },
     cancel_dialog () {
       this.dialogFormVisible = false
     },
     confirm_dialog () {
       if (this.actionType === 0) {
-        this.axios.post('/notifications/', this.form)
+        this.axios.post('/scenics', this.form)
           .then((res) => {
             if (res.data.code === 800) {
               this.dialogFormVisible = false
-              this.getNotificationData()
+              this.getScenicData()
             } else {
               functions.showErrorMessage('发布通知失败')
             }
@@ -330,11 +251,11 @@ export default {
             functions.showErrorMessage('发布通知失败')
           })
       } else if (this.actionType === 1) {
-        this.axios.put('/notifications/' + this.form.id, this.form)
+        this.axios.put('/scenics/' + this.form.id, this.form)
           .then((res) => {
             if (res.data.code === 800) {
               this.dialogFormVisible = false
-              this.getNotificationData()
+              this.getScenicData()
             } else {
               functions.showErrorMessage('编辑通知失败')
             }
@@ -345,10 +266,8 @@ export default {
     },
     new_notification () {
       this.dialogFormVisible = true
-      this.dialogTitle = '发布通知信息'
+      this.dialogTitle = '新增景区信息'
       this.actionType = 0
-      this.form.sendAdminName = sessionStorage.getItem('name')
-      this.form.sendTime = functions.getNowTime()
     },
     changeIsUse (row) {
       let url = '/notifications/closes/' + row.id
@@ -369,18 +288,14 @@ export default {
     dialogFormVisible: function () {
       if (!this.dialogFormVisible) {
         // form 还原
-        this.form.id = ''
-        this.form.title = ''
-        this.form.content = ''
-        this.form.sendAdminName = ''
-        this.form.type = ''
-        this.form.isClose = ''
-        this.form.sendTime = ''
+        for (let key in this.form) {
+          this.form[key] = ''
+        }
       }
     }
   },
   created () {
-    this.getNotificationData()
+    this.getScenicData()
   }
 }
 </script>

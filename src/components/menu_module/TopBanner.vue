@@ -7,11 +7,11 @@
         </el-col>
         <el-col :span="1">
           <div>
-            <el-dropdown :hide-on-click="false" style="margin-top: 20px">
+            <el-dropdown :hide-on-click="false" style="margin-top: 20px" @command="handleCommand">
               <span class="el-dropdown-link">{{name}}<i class="el-icon-arrow-down el-icon--right"/></span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>修改密码</el-dropdown-item>
-                  <el-dropdown-item>退出登录</el-dropdown-item>
+                  <el-dropdown-item command="logOut">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -26,6 +26,15 @@ export default {
     return {
       headIcon: sessionStorage.getItem('headIcon'),
       name: sessionStorage.getItem('name')
+    }
+  },
+  methods: {
+    handleCommand (command) {
+      if (command === 'logOut') {
+        sessionStorage.setItem('token', 'false')
+        this.$router.push({name: 'EndLogin'}).catch(err => { console.log(err) })
+        this.$router.go(0)
+      }
     }
   }
 }

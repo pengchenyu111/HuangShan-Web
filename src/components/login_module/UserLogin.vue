@@ -54,6 +54,7 @@ export default {
                 this.$store.commit('setLoginInfo', response.data.data)
                 sessionStorage.setItem('headIcon', response.data.data.headIcon)
                 sessionStorage.setItem('name', response.data.data.name)
+                sessionStorage.setItem('token', 'true')
                 this.$router.push({name: 'Main'})
               } else {
                 functions.showErrorMessage('账号或密码错误')
