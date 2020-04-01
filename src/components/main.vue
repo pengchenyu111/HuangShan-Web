@@ -8,6 +8,7 @@
         <top-banner/>
       </el-header>
       <el-main class="container-main">
+        <welcome-module v-if="this.$store.state.moduleState === 0xFFFF" />
         <manager-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.MANAGER_MODULE" />
         <tourist-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.TOURIST_MODULE" />
         <notification-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.NOTIFICATION_MODULE"/>
@@ -38,10 +39,12 @@ import DailyNumPredictModule from './DailyNumPredictModule'
 import HourlyNumModule from './HourlyNumModule'
 import HourlyNumManageModule from './HourlyNumManageModule'
 import SuggestionModule from './SuggestionModule'
+import WelcomeModule from './welcomeModule'
 
 export default {
   name: 'Main',
   components: {
+    WelcomeModule,
     SuggestionModule,
     HourlyNumManageModule,
     HourlyNumModule,

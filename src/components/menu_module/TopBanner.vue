@@ -10,7 +10,7 @@
             <el-dropdown :hide-on-click="false" style="margin-top: 20px" @command="handleCommand">
               <span class="el-dropdown-link">{{name}}<i class="el-icon-arrow-down el-icon--right"/></span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>修改密码</el-dropdown-item>
+                  <el-dropdown-item command="b">修改密码</el-dropdown-item>
                   <el-dropdown-item command="logOut">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -33,7 +33,9 @@ export default {
       if (command === 'logOut') {
         sessionStorage.setItem('token', 'false')
         this.$router.push({name: 'EndLogin'}).catch(err => { console.log(err) })
-        this.$router.go(0)
+        // this.$router.go(0)
+      } else if (command === 'b') {
+        console.log(this.$store.state.moduleState)
       }
     }
   }
