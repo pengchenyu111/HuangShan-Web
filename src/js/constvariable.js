@@ -47,7 +47,9 @@ const MODULE_STATES = {
   // 小时客流量
   HOURLYNUM_MODULE: 0x0070,
   // 管理小时数据
-  HOURLYMANAGE_MODULE: 0x0080
+  HOURLYMANAGE_MODULE: 0x0080,
+  // 投诉信息
+  SUGGESTION_MODULE: 0x0090
 }
 
 export {

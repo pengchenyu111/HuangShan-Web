@@ -17,6 +17,7 @@
         <daily-num-predict-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.DAILYNUM_PREDICT_MODULE"/>
         <hourly-num-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.HOURLYNUM_MODULE"/>
         <hourly-num-manage-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.HOURLYMANAGE_MODULE"/>
+        <suggestion-module v-if="(this.$store.state.moduleState & 0xFFF0) === this.MODULE_STATES.SUGGESTION_MODULE"/>
       </el-main>
     </el-container>
   </el-container>
@@ -36,10 +37,12 @@ import HotelModule from './HotelModule'
 import DailyNumPredictModule from './DailyNumPredictModule'
 import HourlyNumModule from './HourlyNumModule'
 import HourlyNumManageModule from './HourlyNumManageModule'
+import SuggestionModule from './SuggestionModule'
 
 export default {
   name: 'Main',
   components: {
+    SuggestionModule,
     HourlyNumManageModule,
     HourlyNumModule,
     DailyNumPredictModule,

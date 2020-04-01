@@ -13,74 +13,88 @@
           </el-date-picker>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="3"><div class="dialog-hint">天气：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">6时：</div></el-col>
         <el-col :span="7">
-          <el-select v-model="form.weatherName" filterable placeholder="请选择天气类型">
-            <el-option
-              v-for="item in weatherOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <el-input v-model="form['06']" placeholder="请输入6时客流" type="number">
+          </el-input>
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">八时客流：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">7时：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.todayNineNum" placeholder="请输入八时客流" type="number">
+          <el-input v-model="form['07']" placeholder="请输入7时客流" type="number">
           </el-input>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="3"><div class="dialog-hint">九时客流：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">8时：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.todayEightNum" placeholder="请输入九时客流" type="number">
+          <el-input v-model="form['08']" placeholder="请输入8时客流" type="number">
           </el-input>
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">今日客流：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">9时：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.todayTotalNum" placeholder="请输入今日客流" type="number">
+          <el-input v-model="form['09']" placeholder="请输入9时客流" type="number">
           </el-input>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="3"><div class="dialog-hint">预测客流：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">10时：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.predictNum" placeholder="请输入预测客流" type="number" :disabled="predictInput">
+          <el-input v-model="form['10']" placeholder="请输入10时客流" type="number">
           </el-input>
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">节日：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">11时：</div></el-col>
         <el-col :span="7">
-          <el-select v-model="form.holidayName" filterable placeholder="请选择节日类型" @change="chooseHoliday">
-            <el-option
-              v-for="item in holidayOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <el-input v-model="form['11']" placeholder="请输入11时客流" type="number">
+          </el-input>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="3"><div class="dialog-hint">相对天数：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">12时：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.holidayOrder" placeholder="请输入相对天数" type="number" :disabled="xiangdui">
+          <el-input v-model="form['12']" placeholder="请输入12时客流" type="number">
           </el-input>
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">订票数：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">13时：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.orderNum" placeholder="请输入订票数" type="number">
+          <el-input v-model="form['13']" placeholder="请输入13时客流" type="number">
+          </el-input>
+        </el-col>
+        <el-col :span="3"><div>&nbsp;</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">14时：</div></el-col>
+        <el-col :span="7">
+          <el-input v-model="form['14']" placeholder="请输入14时客流" type="number">
           </el-input>
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">描述：</div></el-col>
-        <el-col :span="20">
-          <el-input type="textarea" rows="3" v-model="form.description"/>
+        <el-col :span="3"><div class="dialog-hint">15时：</div></el-col>
+        <el-col :span="7">
+          <el-input v-model="form['15']" placeholder="请输入15时客流" type="number">
+          </el-input>
+        </el-col>
+        <el-col :span="3"><div>&nbsp;</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">16时：</div></el-col>
+        <el-col :span="7">
+          <el-input v-model="form['16']" placeholder="请输入16时客流" type="number">
+          </el-input>
+        </el-col>
+      </el-row>
+      <el-row class="add-dialog-row">
+        <el-col :span="3"><div class="dialog-hint">17时：</div></el-col>
+        <el-col :span="7">
+          <el-input v-model="form['17']" placeholder="请输入17时客流" type="number">
+          </el-input>
+        </el-col>
+        <el-col :span="3"><div>&nbsp;</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">18时：</div></el-col>
+        <el-col :span="7">
+          <el-input v-model="form['18']" placeholder="请输入18时客流" type="number">
+          </el-input>
         </el-col>
       </el-row>
       <div class="dialog-footer">
@@ -113,16 +127,16 @@
           <el-divider content-position="right">详细信息</el-divider>
           <el-row>
             <el-col :span="3">
-              <el-button type="primary" @click="addNewData"><i class="el-icon-plus">新增天气记录</i></el-button>
+              <el-button type="primary" @click="addNewData"><i class="el-icon-plus">新增每日每时记录</i></el-button>
             </el-col>
           </el-row>
         </div>
         <div class="data-show">
           <el-table
             :data="tableData.slice(this.pageSize * (this.currentPage - 1), this.pageSize * (this.currentPage - 1) + this.pageSize)"
-            class="searchTable"
-            v-loading="leftDataLoading">
+            class="searchTable">
             <el-table-column
+              prop="dateName"
               label="日期"
               width="120"
               align="center">
@@ -132,66 +146,118 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="dateWeek"
-              label="星期"
+              label="6时"
               align="center">
-            </el-table-column>
-            <el-table-column
-              prop="weatherName"
-              label="天气"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="orderNum"
-              label="订票数"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="todayEightNum"
-              label="八时客流"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="todayNineNum"
-              label="九时客流"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="todayTotalNum"
-              label="客流量"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="predictNum"
-              label="预测"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              prop="deviationRate"
-              label="预测误差"
-              align="center">
-            </el-table-column>
-            <el-table-column
-              label="节日"
-              align="center">
-              <template v-slot="holiScope">
-                <el-tag type="danger" v-if="holiScope.row.holidayName != null">{{holiScope.row.holidayName}}</el-tag>
-                <el-tag type="primary" v-if="holiScope.row.holidayName == null">非节日</el-tag>
+              <template v-slot="sixScope">
+                <el-tag type="danger" v-if="sixScope.row['06'] === null">未统计</el-tag>
+                <span v-if="sixScope.row['06'] !== null">{{sixScope.row['06']}}</span>
               </template>
             </el-table-column>
             <el-table-column
-              label="描述"
+              label="7时"
               align="center">
-              <template v-slot="introScope">
-                <el-popover
-                  v-if="introScope.row.description !== null"
-                  placement="top-start"
-                  width="250"
-                  trigger="hover">
-                  <p style="text-indent: 2em">{{introScope.row.description}}</p>
-                  <el-button slot="reference" type="text" size="mini" style="text-overflow:ellipsis">{{introScope.row.description}}</el-button>
-                </el-popover>
-                <el-tag type="info" v-if="introScope.row.description === null">无描述</el-tag>
+              <template v-slot="sevenScope">
+                <el-tag type="danger" v-if="sevenScope.row['07'] === null">未统计</el-tag>
+                <span v-if="sevenScope.row['07'] !== null">{{sevenScope.row['07']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="08"
+              label="8时"
+              align="center">
+              <template v-slot="eightScope">
+                <el-tag type="danger" v-if="eightScope.row['08'] === null">未统计</el-tag>
+                <span v-if="eightScope.row['08'] !== null">{{eightScope.row['08']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="09"
+              label="9时"
+              align="center">
+              <template v-slot="nineScope">
+                <el-tag type="danger" v-if="nineScope.row['09'] === null">未统计</el-tag>
+                <span v-if="nineScope.row['09'] !== null">{{nineScope.row['09']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="10"
+              label="10时"
+              align="center">
+              <template v-slot="tenScope">
+                <el-tag type="danger" v-if="tenScope.row['10'] === null">未统计</el-tag>
+                <span v-if="tenScope.row['10'] !== null">{{tenScope.row['10']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="11"
+              label="11时"
+              align="center">
+              <template v-slot="elevenScope">
+                <el-tag type="danger" v-if="elevenScope.row['11'] === null">未统计</el-tag>
+                <span v-if="elevenScope.row['11'] !== null">{{elevenScope.row['11']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="12"
+              label="12时"
+              align="center">
+              <template v-slot="twelveScope">
+                <el-tag type="danger" v-if="twelveScope.row['12'] === null">未统计</el-tag>
+                <span v-if="twelveScope.row['12'] !== null">{{twelveScope.row['12']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="13"
+              label="13时"
+              align="center">
+              <template v-slot="thirteenScope">
+                <el-tag type="danger" v-if="thirteenScope.row['13'] === null">未统计</el-tag>
+                <span v-if="thirteenScope.row['13'] !== null">{{thirteenScope.row['13']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="14"
+              label="14时"
+              align="center">
+              <template v-slot="fourteenScope">
+                <el-tag type="danger" v-if="fourteenScope.row['14'] === null">未统计</el-tag>
+                <span v-if="fourteenScope.row['14'] !== null">{{fourteenScope.row['14']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="15"
+              label="15时"
+              align="center">
+              <template v-slot="fifteenScope">
+                <el-tag type="danger" v-if="fifteenScope.row['15'] === null">未统计</el-tag>
+                <span v-if="fifteenScope.row['15'] !== null">{{fifteenScope.row['15']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="16"
+              label="16时"
+              align="center">
+              <template v-slot="sixteenScope">
+                <el-tag type="danger" v-if="sixteenScope.row['16'] === null">未统计</el-tag>
+                <span v-if="sixteenScope.row['16'] !== null">{{sixteenScope.row['16']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="17"
+              label="17时"
+              align="center">
+              <template v-slot="seventeenScope">
+                <el-tag type="danger" v-if="seventeenScope.row['17'] === null">未统计</el-tag>
+                <span v-if="seventeenScope.row['17'] !== null">{{seventeenScope.row['17']}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="18"
+              label="18时"
+              align="center">
+              <template v-slot="eighteenScope">
+                <el-tag type="danger" v-if="eighteenScope.row['18'] === null">未统计</el-tag>
+                <span v-if="eighteenScope.row['18'] !== null">{{eighteenScope.row['18']}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -233,26 +299,25 @@ export default {
       isSearch: false,
       inputName: '',
       tableData: [],
-      leftDataLoading: true,
       dialogTitle: '',
       dialogFormVisible: false,
       actionType: '',
+      hours: ['06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18'],
       form: {
-        startDate: '',
-        endDate: '',
         dateName: '',
-        dateWeek: '',
-        todayEightNum: '',
-        todayNineNum: '',
-        todayTotalNum: '',
-        orderNum: '',
-        weatherName: '',
-        moduleName: '',
-        description: '',
-        isHoliday: '',
-        holidayName: '',
-        holidayOrder: '',
-        predictNum: ''
+        '06': '',
+        '07': '',
+        '08': '',
+        '09': '',
+        '10': '',
+        '11': '',
+        '12': '',
+        '13': '',
+        '14': '',
+        '15': '',
+        '16': '',
+        '17': '',
+        '18': ''
       },
       pickerOptions: {
         shortcuts: [{
@@ -282,86 +347,12 @@ export default {
         }]
       },
       value2: '',
-      holidayOptions: [{
-        value: '非节日',
-        label: '非节日'
-      }, {
-        value: '国庆节',
-        label: '国庆节'
-      }, {
-        value: '中秋节',
-        label: '中秋节'
-      }, {
-        value: '端午节',
-        label: '端午节'
-      }, {
-        value: '劳动节',
-        label: '劳动节'
-      }, {
-        value: '清明节',
-        label: '清明节'
-      }, {
-        value: '春节',
-        label: '春节'
-      }, {
-        value: '元旦',
-        label: '元旦'
-      }],
-      weatherOptions: [{
-        value: '晴',
-        label: '晴'
-      }, {
-        value: '晴间多云',
-        label: '晴间多云'
-      }, {
-        value: '多云',
-        label: '多云'
-      }, {
-        value: '阴',
-        label: '阴'
-      }, {
-        value: '小雨',
-        label: '小雨'
-      }, {
-        value: '中雨',
-        label: '中雨'
-      }, {
-        value: '大雨',
-        label: '大雨'
-      }, {
-        value: '暴雨',
-        label: '暴雨'
-      }, {
-        value: '阵雨',
-        label: '阵雨'
-      }, {
-        value: '雷阵雨',
-        label: '雷阵雨'
-      }, {
-        value: '强阵雨',
-        label: '强阵雨'
-      }, {
-        value: '小雪',
-        label: '小雪'
-      }, {
-        value: '中雪',
-        label: '中雪'
-      }, {
-        value: '大雪',
-        label: '大雪'
-      }, {
-        value: '雨夹雪',
-        label: '雨夹雪'
-      }, {
-        value: '暴雪',
-        label: '暴雪'
-      }],
       xiangdui: true
     }
   },
   methods: {
     delete_dailyNum (row) {
-      this.axios.delete('/daily_nums/' + row.dateName)
+      this.axios.delete('/hourly_nums/' + row.dateName)
         .then((res) => {
           if (res.data.code === 800) {
             this.dialogFormVisible = false
@@ -373,38 +364,17 @@ export default {
           functions.showErrorMessage('删除记录失败')
         })
     },
-    changeDateWeek (num) {
-      if (num === 0) {
-        return '星期日'
-      } else if (num === 1) {
-        return '星期一'
-      } else if (num === 2) {
-        return '星期二'
-      } else if (num === 3) {
-        return '星期三'
-      } else if (num === 4) {
-        return '星期四'
-      } else if (num === 5) {
-        return '星期五'
-      } else if (num === 6) {
-        return '星期六'
-      }
-    },
-    chooseHoliday () {
-      if (this.form.holidayName !== '非节日') {
-        this.xiangdui = false
-      } else {
-        this.form.holidayOrder = ''
-        this.xiangdui = true
-      }
-    },
     confirm_dialog () {
       if (this.actionType === 0) {
-        this.form.dateWeek = this.changeDateWeek(new Date(this.form.dateName).getDay())
-        if (this.form.holidayName === '非节日') {
-          this.form.holidayName = null
+        let array = []
+        for (let i = 0; i < this.hours.length; i++) {
+          let day = {}
+          day['dateName'] = this.form.dateName
+          day['hour'] = this.hours[i]
+          day['hourNum'] = this.form[this.hours[i]]
+          array.push(day)
         }
-        this.axios.post('/daily_nums', this.form)
+        this.axios.post('/hourly_nums/many', array)
           .then((res) => {
             if (res.data.code === 800) {
               this.dialogFormVisible = false
@@ -416,10 +386,15 @@ export default {
             functions.showErrorMessage('新增记录失败')
           })
       } else if (this.actionType === 1) {
-        if (this.form.holidayName === '非节日') {
-          this.form.holidayName = null
+        let array = []
+        for (let i = 0; i < this.hours.length; i++) {
+          let day = {}
+          day['dateName'] = this.form.dateName
+          day['hour'] = this.hours[i]
+          day['hourNum'] = this.form[this.hours[i]]
+          array.push(day)
         }
-        this.axios.put('/daily_nums/' + this.form.dateName, this.form)
+        this.axios.put('/hourly_nums/' + this.form.dateName, array)
           .then((res) => {
             if (res.data.code === 800) {
               this.dialogFormVisible = false
@@ -437,30 +412,17 @@ export default {
     },
     addNewData () {
       this.dialogFormVisible = true
-      this.dialogTitle = '新增天气记录'
+      this.dialogTitle = '新增每日每时记录'
       this.actionType = 0
-      this.predictInput = true
     },
     edit_dailyNum (row) {
       this.dialogFormVisible = true
-      this.dialogTitle = '编辑天气记录'
+      this.dialogTitle = '编辑每日每时信息'
       this.actionType = 1
-      this.form.dateName = row.dateName
-      this.form.dateWeek = row.dateWeek
-      this.form.todayEightNum = row.todayEightNum
-      this.form.todayNineNum = row.todayNineNum
-      this.form.todayTotalNum = row.todayTotalNum
-      this.form.orderNum = row.orderNum
-      this.form.deviationRate = row.deviationRate
-      this.form.weatherName = row.weatherName
-      this.form.description = row.description
-      this.form.holidayName = row.holidayName
-      this.form.predictNum = row.predictNum
-      this.predictInput = false
-      if (this.form.holidayName === null) {
-        this.form.holidayName = '非节日'
+      for (let i = 0; i < this.hours.length; i++) {
+        this.form[this.hours[i]] = row[this.hours[i]]
       }
-      this.chooseHoliday()
+      this.form.dateName = row.dateName
     },
     handleCurrentChange (val) {
       this.currentPage = val
@@ -469,37 +431,94 @@ export default {
       if (this.value2 === '' || this.value2 === null) {
         functions.showErrorMessage('请选择起止日期')
       } else {
-        this.leftDataLoading = true
-        this.axios.get('/daily_nums/period/start/' + this.value2[0] + '/end/' + this.value2[1])
+        this.axios.get('/hourly_nums/period/start/' + this.value2[0] + '/end/' + this.value2[1])
           .then((response) => {
             console.log(response)
             if (response.data.code === 800) {
               this.tableData = []
-              for (let i = 0; i < response.data.data.length; i++) {
-                this.tableData.push(response.data.data[i])
-                this.tableData[i].deviationRate = this.tableData[i].deviationRate.toFixed(4)
+              for (let i = 0; i < response.data.data.length;) {
+                if (i >= response.data.data.length - 1) {
+                  break
+                }
+                let day = {}
+                for (i; i < response.data.data.length - 1; i++) {
+                  if (response.data.data[i].dateName === response.data.data[i + 1].dateName) {
+                    day['dateName'] = response.data.data[i].dateName
+                    day[response.data.data[i].hour] = response.data.data[i].hourNum
+                    if (i + 1 === response.data.data.length - 1) {
+                      day[response.data.data[i + 1].hour] = response.data.data[i + 1].hourNum
+                      for (let j = 0; j < this.hours.length; j++) {
+                        if (!day.hasOwnProperty(this.hours[j])) {
+                          day[this.hours[j]] = null
+                        }
+                      }
+                      this.tableData.push(day)
+                      i++
+                      break
+                    }
+                  } else {
+                    day['dateName'] = response.data.data[i].dateName
+                    day[response.data.data[i].hour] = response.data.data[i].hourNum
+                    for (let j = 0; j < this.hours.length; j++) {
+                      if (!day.hasOwnProperty(this.hours[j])) {
+                        day[this.hours[j]] = null
+                      }
+                    }
+                    this.tableData.push(day)
+                    i++
+                    break
+                  }
+                }
               }
-              this.leftDataLoading = false
             } else if (response.data.code === 801) {
               this.tableData = []
-              this.leftDataLoading = false
+              functions.showSuccessMessage('查询记录失败')
             }
           })
           .catch((error) => {
-            this.leftDataLoading = false
             console.log(error)
+            functions.showSuccessMessage('查询记录失败')
           })
       }
     },
     getDefaultData () {
-      this.axios.get('/daily_nums/limit_all')
+      this.axios.get('/hourly_nums/period/start/' + '2019-03-02' + '/end/' + '2023-04-13')
         .then((response) => {
           this.tableData = []
-          for (let i = 0; i < response.data.data.length; i++) {
-            this.tableData.push(response.data.data[i])
-            this.tableData[i].deviationRate = this.tableData[i].deviationRate.toFixed(4)
+          for (let i = 0; i < response.data.data.length;) {
+            if (i >= response.data.data.length - 1) {
+              break
+            }
+            let day = {}
+            for (i; i < response.data.data.length - 1; i++) {
+              if (response.data.data[i].dateName === response.data.data[i + 1].dateName) {
+                day['dateName'] = response.data.data[i].dateName
+                day[response.data.data[i].hour] = response.data.data[i].hourNum
+                if (i + 1 === response.data.data.length - 1) {
+                  day[response.data.data[i + 1].hour] = response.data.data[i + 1].hourNum
+                  for (let j = 0; j < this.hours.length; j++) {
+                    if (!day.hasOwnProperty(this.hours[j])) {
+                      day[this.hours[j]] = null
+                    }
+                  }
+                  this.tableData.push(day)
+                  i++
+                  break
+                }
+              } else {
+                day['dateName'] = response.data.data[i].dateName
+                day[response.data.data[i].hour] = response.data.data[i].hourNum
+                for (let j = 0; j < this.hours.length; j++) {
+                  if (!day.hasOwnProperty(this.hours[j])) {
+                    day[this.hours[j]] = null
+                  }
+                }
+                this.tableData.push(day)
+                i++
+                break
+              }
+            }
           }
-          this.leftDataLoading = false
         })
         .catch((error) => {
           console.log(error)

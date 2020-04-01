@@ -10,7 +10,6 @@
         <span>基础信息</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="1-1">个人信息</el-menu-item>
         <el-menu-item index="1-2" @click="setModuleState(MODULE_STATES.MANAGER_MODULE,EDIT_STATUS.STATUS_INITIAL)">管理信息</el-menu-item>
         <el-menu-item index="1-3" @click="setModuleState(MODULE_STATES.TOURIST_MODULE,EDIT_STATUS.STATUS_INITIAL)">游客信息</el-menu-item>
       </el-menu-item-group>
@@ -30,10 +29,11 @@
     <el-submenu index="3">
       <template slot="title">
         <i class="el-icon-coin"/>
-        <span>通知信息</span>
+        <span>消息信息</span>
       </template>
       <el-menu-item-group>
         <el-menu-item index="3-1" @click="setModuleState(MODULE_STATES.NOTIFICATION_MODULE,EDIT_STATUS.STATUS_INITIAL)">通知信息</el-menu-item>
+        <el-menu-item index="3-2" @click="setModuleState(MODULE_STATES.SUGGESTION_MODULE,EDIT_STATUS.STATUS_INITIAL)">建议信息</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
     <el-submenu index="4">

@@ -3,7 +3,7 @@
     <el-card shadow="hover" class="box-card">
       <el-row :gutter="60" class="search-row">
         <el-col :span="9" :offset="5">
-          <el-input v-model="inputName" placeholder="请输入标题 / 内容"/>
+          <el-input v-model="inputName" placeholder="请输入建议 / 建议人 / 联系方式"/>
         </el-col>
         <el-col :span="2">
           <el-button type="primary" @click="getInput" icon="el-icon-search" >搜索</el-button>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'NotificationSearch',
+  name: 'SuggestionSearch',
   methods: {
     getInput () {
       this.$emit('inputFilter', this.inputName)

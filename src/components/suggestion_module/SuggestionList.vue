@@ -2,40 +2,32 @@
   <div>
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">标题：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">编号：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.title" placeholder="请输入标题">
-          </el-input>
+          <el-input v-model="form.id" :disabled="true"/>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="2" :offset="1"><div class="dialog-hint">发送人：</div></el-col>
+        <el-col :span="2" :offset="1"><div class="dialog-hint">建议人：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.sendAdminName" disabled>
+          <el-input v-model="form.propounder" disabled>
           </el-input>
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">类型：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">联系方式：</div></el-col>
         <el-col :span="7">
-          <el-select v-model="form.type" placeholder="请选择类型">
-            <el-option
-              v-for="item in typeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <el-input v-model="form.contactWay"/>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="3"><div class="dialog-hint">创建时间：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">建议时间：</div></el-col>
         <el-col :span="7">
-          <el-input v-model="form.sendTime" :disabled="true"/>
+          <el-input v-model="form.feedbackTime" :disabled="true"/>
         </el-col>
       </el-row>
       <el-row class="add-dialog-row">
-        <el-col :span="3"><div class="dialog-hint">内容：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">建议：</div></el-col>
         <el-col :span="20">
-          <el-input type="textarea" rows="7" v-model="form.content"/>
+          <el-input type="textarea" rows="7" v-model="form.suggestion"/>
         </el-col>
       </el-row>
       <div class="dialog-footer">
@@ -43,13 +35,8 @@
         <el-button type="primary" @click="confirm_dialog">确 定</el-button>
       </div>
     </el-dialog>
-    <tourist-search @inputFilter="filtering" @inputReset="resett"/>
+    <suggestion-search @inputFilter="filtering" @inputReset="resett"/>
     <el-card shadow="hover" class="box-card">
-      <el-row>
-      <el-col :span="3">
-        <el-button type="primary" @click="new_notification"><i class="el-icon-plus">发布通知信息</i></el-button>
-      </el-col>
-    </el-row>
       <el-divider content-position="right">详细信息</el-divider>
       <el-table :data="bleData" class="searchTable">
         <el-table-column
@@ -60,81 +47,42 @@
         </el-table-column>
         <el-table-column
           prop="id"
-          width="200"
           label="编号"
           align="center">
         </el-table-column>
         <el-table-column
-          prop="title"
-          label="标题"
-          width="120"
-          align="center">
-          <template v-slot="titleScope">
-            <el-tooltip placement="top" effect="light">
-              <div slot="content">{{titleScope.row.title}}</div>
-              <el-tag style="width: 100px; text-overflow:ellipsis; overflow: hidden;">{{titleScope.row.title}}</el-tag>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="内容"
-          width="250"
+          label="建议"
+          width="350"
           align="center">
           <template v-slot="contentScope">
             <el-popover
               placement="top-start"
               width="280"
               trigger="hover">
-              <p style="text-indent: 2em">{{contentScope.row.content}}</p>
-              <el-button slot="reference" type="text" style="text-overflow:ellipsis">{{contentScope.row.content}}</el-button>
+              <p style="text-indent: 2em">{{contentScope.row.suggestion}}</p>
+              <el-button slot="reference" type="text" style="text-overflow:ellipsis">{{contentScope.row.suggestion}}</el-button>
             </el-popover>
           </template>
         </el-table-column>
         <el-table-column
-          prop="type"
-          width="120"
-          label="类别"
-          align="center">
-          <template v-slot="typeScope">
-            <el-tag :type="getNotificationTypeColor(typeScope.row.type)" effect="dark">{{getNotificationType(typeScope.row.type)}}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="sendAdminName"
-          label="发送人"
-          width="100"
+          prop="propounder"
+          width="150"
+          label="建议人"
           align="center">
         </el-table-column>
         <el-table-column
-          label="发送时间"
+          prop="contactWay"
+          width="150"
+          label="联系方式"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          label="反馈时间"
+          width="200"
           align="center">
           <template v-slot="timeScope">
             <i class="el-icon-time"/>
-            <span class="time-slot">{{timeScope.row.sendTime}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="状态"
-          width="90"
-          align="center">
-          <template v-slot="OpenScope">
-            <el-switch
-              v-model="OpenScope.row.isClose"
-              v-if="OpenScope.row.isClose === 0"
-              active-color="#0bd077"
-              @change="changeIsUse(OpenScope.row)"
-              :active-value="0"
-              :inactive-value="1">
-            </el-switch>
-            <el-switch
-              v-model="OpenScope.row.isClose"
-              v-if="OpenScope.row.isClose === 1"
-              active-color="#0bd077"
-              disabled
-              @change="changeIsUse(OpenScope.row)"
-              :active-value="0"
-              :inactive-value="1">
-            </el-switch>
+            <span class="time-slot">{{timeScope.row.feedbackTime}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -165,13 +113,13 @@
 </template>
 
 <script>
-import TouristSearch from './NotificationSearch'
+import SuggestionSearch from './SuggestionSearch'
 import {functions} from '../../js/function'
 
 export default {
-  name: 'NotificationList',
+  name: 'SuggestionList',
   components: {
-    'tourist-search': TouristSearch
+    'suggestion-search': SuggestionSearch
   },
   data () {
     return {
@@ -186,13 +134,11 @@ export default {
       dialogFormVisible: false,
       actionType: '', // 0 新增 1 编辑
       form: {
-        sendAdminName: '',
-        title: '',
-        content: '',
-        sendTime: '',
         id: '',
-        type: '',
-        isClose: '0'
+        suggestion: '',
+        propounder: '',
+        feedbackTime: '',
+        contactWay: ''
       },
       typeOptions: [{
         value: '0',
@@ -212,7 +158,7 @@ export default {
   computed: {
     bleData () {
       if (this.isSearch) {
-        let table = this.tableData.filter(data => (data.title.includes(this.inputName)) || data.content.includes(this.inputName))
+        let table = this.tableData.filter(data => (data.suggestion.includes(this.inputName)) || data.propounder.includes(this.inputName) || data.contactWay.includes(this.inputName))
         this.changePages(table)
         if (table.length > this.pageSize) {
           return table.slice(this.pageSize * (this.currentPage - 1), this.pageSize * (this.currentPage - 1) + this.pageSize)
@@ -230,44 +176,18 @@ export default {
   },
   methods: {
     deleteNotification (row) {
-      this.axios.delete('notifications/' + row.id)
+      this.axios.delete('/suggestions/' + row.id)
         .then((response) => {
           if (response.data.code !== 800) {
             functions.showErrorMessage('删除失败')
           } else {
-            this.getNotificationData()
+            this.getSuggestionData()
           }
         })
         .catch((error) => {
           console.log(error)
           functions.showErrorMessage('删除失败')
         })
-    },
-    getNotificationTypeColor (number) {
-      let name = ''
-      if (number === '0') {
-        name = 'danger'
-      } else if (number === '1') {
-        name = 'warning'
-      } else if (number === '2') {
-        name = 'warning'
-      } else {
-        name = 'success'
-      }
-      return name
-    },
-    getNotificationType (number) {
-      let name = ''
-      if (number === '0') {
-        name = '紧急通知'
-      } else if (number === '1') {
-        name = '客流预警'
-      } else if (number === '2') {
-        name = '天气预警'
-      } else {
-        name = '优惠通知'
-      }
-      return name
     },
     handleCurrentChange (val) {
       this.currentPage = val
@@ -285,17 +205,16 @@ export default {
       this.inputName = ''
       this.currentPage = 1
     },
-    getNotificationData () {
-      this.axios.get('/notifications/all')
+    getSuggestionData () {
+      this.axios.get('/suggestions')
         .then((response) => {
-          this.tableData = []
-          for (let i = 0; i < response.data.data.length; i++) {
-            if (response.data.data[i].isClose === '1') {
-              response.data.data[i].isClose = 1
-            } else {
-              response.data.data[i].isClose = 0
+          if (response.data.code === 800) {
+            this.tableData = []
+            for (let i = 0; i < response.data.data.length; i++) {
+              this.tableData.push(response.data.data[i])
             }
-            this.tableData.push(response.data.data[i])
+          } else {
+            functions.showErrorMessage('更新查询失败')
           }
         })
         .catch(() => {
@@ -304,42 +223,29 @@ export default {
     },
     edit_student (row) {
       this.dialogFormVisible = true
-      this.dialogTitle = '编辑通知信息'
+      this.dialogTitle = '编辑建议信息'
       this.actionType = 1
-      this.form.title = row.title
       this.form.id = row.id
-      this.form.content = row.content
-      this.form.sendTime = row.sendTime
-      this.form.sendAdminName = row.sendAdminName
-      this.form.type = row.type
+      this.form.suggestion = row.suggestion
+      this.form.propounder = row.propounder
+      this.form.feedbackTime = row.feedbackTime
+      this.form.contactWay = row.contactWay
     },
     cancel_dialog () {
       this.dialogFormVisible = false
     },
     confirm_dialog () {
-      if (this.actionType === 0) {
-        this.axios.post('/notifications/', this.form)
+      if (this.actionType === 1) {
+        this.axios.put('/suggestions/' + this.form.id, this.form)
           .then((res) => {
             if (res.data.code === 800) {
               this.dialogFormVisible = false
-              this.getNotificationData()
+              this.getSuggestionData()
             } else {
-              functions.showErrorMessage('发布通知失败')
+              functions.showErrorMessage('编辑建议信息失败')
             }
           }).catch(() => {
-            functions.showErrorMessage('发布通知失败')
-          })
-      } else if (this.actionType === 1) {
-        this.axios.put('/notifications/' + this.form.id, this.form)
-          .then((res) => {
-            if (res.data.code === 800) {
-              this.dialogFormVisible = false
-              this.getNotificationData()
-            } else {
-              functions.showErrorMessage('编辑通知失败')
-            }
-          }).catch(() => {
-            functions.showErrorMessage('编辑通知失败')
+            functions.showErrorMessage('编辑建议信息失败')
           })
       }
     },
@@ -369,18 +275,14 @@ export default {
     dialogFormVisible: function () {
       if (!this.dialogFormVisible) {
         // form 还原
-        this.form.id = ''
-        this.form.title = ''
-        this.form.content = ''
-        this.form.sendAdminName = ''
-        this.form.type = ''
-        this.form.isClose = ''
-        this.form.sendTime = ''
+        for (let key in this.form) {
+          this.form[key] = ''
+        }
       }
     }
   },
   created () {
-    this.getNotificationData()
+    this.getSuggestionData()
   }
 }
 </script>
