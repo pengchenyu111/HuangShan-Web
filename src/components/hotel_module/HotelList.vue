@@ -80,7 +80,7 @@
           </el-select>
         </el-col>
         <el-col :span="3"><div>&nbsp;</div></el-col>
-        <el-col :span="3"><div class="dialog-hint">花园式：</div></el-col>
+        <el-col :span="3"><div class="dialog-hint">含停车场：</div></el-col>
         <el-col :span="7">
           <el-select v-model="form.isHavePark" placeholder="请选择类型">
             <el-option
@@ -205,7 +205,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="花园式"
+          label="含停车场"
           align="center">
           <template v-slot="parkScope">
             <el-tag v-if="parkScope.row.isHavePark === '0'" type="warning">否</el-tag>
